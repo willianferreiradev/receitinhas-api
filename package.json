@@ -25,6 +25,8 @@
         "sass-loader": "^8.0.0"
     },
     "dependencies": {
+        "react-loader-spinner": "^4.0.0",
+        "styled-components": "^5.2.1",
         "sweetalert2": "^10.15.5"
     }
 }

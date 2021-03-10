@@ -4,7 +4,8 @@ import AddNewIngredient from "./AddNewIngredient";
 
 import Swal from "sweetalert2";
 import { IngredientsList } from "./IngredientsList";
-import httpClient from "../api";
+import RecipeService from "../services/recipes";
+import LoaderComponent from "./Loader";
 
 const swalErrorConfig = {
     title: "Error!",
@@ -16,6 +17,7 @@ const swalErrorConfig = {
 export default function SearchRecipe() {
     const [ingredients, setIngredients] = useState([]);
     const [recipes, setRecipes] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     function addNewIngredient(ingredient) {
         if (ingredients.length === 3) {
@@ -33,17 +35,15 @@ export default function SearchRecipe() {
     }
 
     async function handleSubmit() {
-        // const params = ingredients.join(",");
-        const params = "onions,tomatos";
-        const { keywords, recipes } = await httpClient.get(
-            `recipes?i=${params}`
-        );
-        // console.log(response);
+        setIsLoading(true);
+        const { keywords, recipes } = await RecipeService.index(ingredients);
+        setIsLoading(false);
         setRecipes(recipes);
     }
 
     return (
         <div>
+            <LoaderComponent active={isLoading} />
             <AddNewIngredient onSubmit={addNewIngredient} />
             <IngredientsList
                 ingredients={ingredients}
