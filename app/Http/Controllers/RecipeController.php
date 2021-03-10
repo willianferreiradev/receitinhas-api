@@ -27,7 +27,7 @@ class RecipeController extends Controller
                 $newRecipe['link'] = $recipe['href'];
                 $resGif = $client->request('GET', 'https://api.giphy.com/v1/gifs/search?api_key=83B453UHWtOcJMdTWKEgIcn8Vwv1QA9k&q=' . $newRecipe['title'] . '&limit=25&offset=0&rating=g&lang=en');
                 $gifs = json_decode($resGif->getBody(), true);
-                $newRecipe['gif'] = $gifs['data'][0]['url'];
+                $newRecipe['gif'] = $gifs['data'][0]['images']['original']['url'];
                 return $newRecipe;
             }, $recipes['results'])
         ]);

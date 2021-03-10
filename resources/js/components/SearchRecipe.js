@@ -4,7 +4,7 @@ import AddNewIngredient from "./AddNewIngredient";
 
 import Swal from "sweetalert2";
 import { IngredientsList } from "./IngredientsList";
-import axios from "axios";
+import httpClient from "../api";
 
 const swalErrorConfig = {
     title: "Error!",
@@ -15,6 +15,7 @@ const swalErrorConfig = {
 
 export default function SearchRecipe() {
     const [ingredients, setIngredients] = useState([]);
+    const [recipes, setRecipes] = useState([]);
 
     function addNewIngredient(ingredient) {
         if (ingredients.length === 3) {
@@ -31,10 +32,14 @@ export default function SearchRecipe() {
         setIngredients(itensCopy);
     }
 
-    function handleSubmit() {
-        axios
-            .get("localhost:8000/api/recipes?i=onions,tomatos")
-            .then((r) => console.log(r));
+    async function handleSubmit() {
+        // const params = ingredients.join(",");
+        const params = "onions,tomatos";
+        const { keywords, recipes } = await httpClient.get(
+            `recipes?i=${params}`
+        );
+        // console.log(response);
+        setRecipes(recipes);
     }
 
     return (
@@ -46,6 +51,13 @@ export default function SearchRecipe() {
             />
 
             <button onClick={handleSubmit}>Pesquisar</button>
+
+            {recipes.map((recipe, index) => (
+                <div key={index}>
+                    <p>{recipe.title}</p>
+                    <img src={recipe.gif} alt="" />
+                </div>
+            ))}
         </div>
     );
 }
