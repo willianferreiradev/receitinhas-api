@@ -9,6 +9,12 @@ class RecipeController extends Controller
     public function index(Request $request)
     {
         $ingredients = $request->i;
+        $ingredientsArray = array_map('trim', explode(',', $ingredients));
+
+        if (count($ingredientsArray) > 3) {
+            // response()->json([])
+            return 'Ingredientes de mais';
+        }
         $client = new \GuzzleHttp\Client();
         $res = $client->request('GET', env('RECIPEPUPPY_URL') . '?i=' . $ingredients);
 
