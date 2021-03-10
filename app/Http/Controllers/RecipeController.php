@@ -12,7 +12,6 @@ class RecipeController extends Controller
         $ingredientsArray = array_map('trim', explode(',', $ingredients));
 
         if (count($ingredientsArray) > 3) {
-            // response()->json([])
             return 'Ingredientes de mais';
         }
         $client = new \GuzzleHttp\Client();
